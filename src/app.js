@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const app = express();
 const path = require('path');
 
+const { mongoose } = require('./database');
 //Settings
 app.set('port', process.env.PORT || 3000);
 
@@ -11,8 +12,10 @@ app.use(morgan('dev')); //sirve para tener información sobre cuanto tiempo tard
 app.use(express.json()); //comprueba si la información que llega es un json y así mismo se podrán enviar archivos con formato json
 
 //Routes
+app.use('/api/users', require('./routes/user.routes'));
 
 //Static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Starting the server
 app.listen(app.get('port'), () => {
