@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const { auth } = require('../middleware/auth');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+//AUTENTICACION
+router.get('/auth', auth, async (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    name: req.user.name,
+    mail: req.user.mail,
+  });
+});
 
 //GET TODOS LOS USUARIOS
 router.get('/', async (req, res) => {
@@ -55,16 +66,39 @@ router.post('/register', async (req, res) => {
 
 //PUT
 router.put('/:id', async (req, res) => {
-  const { mail, password } = req.body;
-  const newUser = { mail, password };
-  await User.findByIdAndUpdate(req.params.id, newUser);
-  res.json({ mensaje: 'Usuario actualizado' });
+  let { mail, password } = req.body;
+
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(password, salt, async function (err, hash) {
+      if (err) return next(err);
+      password = hash;
+      const newUser = { mail, password };
+      await User.findByIdAndUpdate(req.params.id, newUser);
+      res.json({ mensaje: `Updated Password ${password}` });
+    });
+  });
 });
 
 //DELETE
 router.delete('/:id', async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.json({ mensaje: 'Usuario eliminado' });
+});
+
+//LOGOUT
+router.get('/logout', auth, (req, res) => {
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { token: '', tokenExp: '' },
+    (err, doc) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+        success: true,
+      });
+    }
+  );
 });
 
 module.exports = router;
