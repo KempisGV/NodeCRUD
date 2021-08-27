@@ -13,6 +13,7 @@ app.use(express.json()); //comprueba si la información que llega es un json y a
 
 //Routes
 app.use('/api/users', require('./routes/user.routes'));
+app.use('/api/tasks', require('./routes/task.routes'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
