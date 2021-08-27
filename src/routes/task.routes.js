@@ -16,8 +16,8 @@ router.get('/:id', async (req, res) => {
 
 //POST
 router.post('/create', async (req, res) => {
-  const  { name, description, status } = req.body;
-  const task = new Task( { name, description, status });
+  const { _userId, name, description, status } = req.body;
+  const task = new Task({ _userId, name, description, status });
 
   try {
     await task.save();
@@ -27,10 +27,11 @@ router.post('/create', async (req, res) => {
     res.json({ error: `${error}` });
   }
 });
+
 //PUT
 router.put('/:id', async (req, res) => {
-  const { name, description, status } = req.body;
-  const newTask = { name, description, status };
+  const { _userId, name, description, status } = req.body;
+  const newTask = { _userId, name, description, status };
   await Task.findByIdAndUpdate(req.params.id, newTask);
   res.json({ mensaje: 'Tarea actualizada' });
 });
