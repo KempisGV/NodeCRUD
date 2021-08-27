@@ -5,8 +5,8 @@ const { Schema } = mongoose;
 const saltRounds = 10;
 
 const UserSchema = new Schema({
-  nombre: { type: String, required: true },
-  correo: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  mail: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   token: {
     type: String,

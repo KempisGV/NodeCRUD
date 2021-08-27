@@ -16,7 +16,7 @@ router.get('/:id', async (req, res) => {
 
 //POST-LOGIN
 router.post('/login', async (req, res) => {
-  await User.findOne({ correo: req.body.correo }, (err, user) => {
+  await User.findOne({ mail: req.body.mail }, (err, user) => {
     if (!user) {
       return res.json({
         loginSucces: false,
@@ -41,8 +41,8 @@ router.post('/login', async (req, res) => {
 
 //POST-REGISTRO
 router.post('/register', async (req, res) => {
-  const { nombre, correo, password } = req.body;
-  const user = new User({ nombre, correo, password });
+  const { name, mail, password } = req.body;
+  const user = new User({ name, mail, password });
 
   try {
     await user.save();
@@ -55,8 +55,8 @@ router.post('/register', async (req, res) => {
 
 //PUT
 router.put('/:id', async (req, res) => {
-  const { correo, password } = req.body;
-  const newUser = { correo, password };
+  const { mail, password } = req.body;
+  const newUser = { mail, password };
   await User.findByIdAndUpdate(req.params.id, newUser);
   res.json({ mensaje: 'Usuario actualizado' });
 });
