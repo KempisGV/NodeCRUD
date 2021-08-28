@@ -5,7 +5,7 @@ const path = require('path');
 
 const { mongoose } = require('./database');
 //Settings
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 4000);
 
 //Middlewares
 app.use(morgan('dev')); //sirve para tener información sobre cuanto tiempo tardo para la petición, código de error, etc
