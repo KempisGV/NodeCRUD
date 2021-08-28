@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const { auth } = require('../middleware/auth');
+const { auth } = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 //AUTENTICACION
@@ -76,7 +76,7 @@ router.put('/:id', async (req, res) => {
       password = hash;
       const newUser = { mail, password };
       await User.findByIdAndUpdate(req.params.id, newUser);
-      res.json({ mensaje: `Updated Password ${password}` });
+      res.json({ mensaje: 'The password was updated' });
     });
   });
 });
