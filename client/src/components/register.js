@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 // This will require to npm install axios
 import axios from 'axios';
+import '../styles.css';
 
-export default class Create extends Component {
+export default class Register extends Component {
   // This is the constructor that stores the data.
   constructor(props) {
     super(props);
@@ -13,9 +14,9 @@ export default class Create extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      name: "",
-      mail: "",
-      password: "",
+      name: '',
+      mail: '',
+      password: '',
     };
   }
 
@@ -38,7 +39,7 @@ export default class Create extends Component {
     });
   }
 
-// This function will handle the submission.
+  // This function will handle the submission.
   onSubmit(e) {
     e.preventDefault();
 
@@ -50,56 +51,55 @@ export default class Create extends Component {
     };
 
     axios
-      .post("http://localhost:4000/api/users/register", newuser)
-      .then((res) => console.log(res.data));
+      .post('http://localhost:4000/api/users/register', newuser)
+      .then(res => console.log(res.data));
 
     // We will empty the state after posting the data to the database
     this.setState({
-      name: "",
-      mail: "",
-      password: "",
+      name: '',
+      mail: '',
+      password: '',
     });
   }
 
   // This following section will display the form that takes the input from the user.
   render() {
     return (
-      <div style={{ marginTop: 20 }}>
-        <h3>Create New Record</h3>
+      <div className='RegisterForm'>
+        <h3 style={{ textAlign: 'center' }}>Register</h3>
         <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Name of the user: </label>
+          <div className='form-group'>
+            <label>Name: </label>
             <input
-              type="text"
-              className="form-control"
+              type='text'
+              className='form-control'
               value={this.state.name}
               onChange={this.onChangeName}
             />
           </div>
-          <div className="form-group">
-            <label>User's mail: </label>
+          <div className='form-group'>
+            <label>Mail: </label>
             <input
-              type="text"
-              className="form-control"
+              type='text'
+              className='form-control'
               value={this.state.mail}
               onChange={this.onChangeMail}
             />
           </div>
-          <div className="form-group">
-            <label>User's password: </label>
+          <div className='form-group'>
+            <label>Password: </label>
             <input
-              type="password"
-              className="form-control"
+              type='password'
+              className='form-control'
               value={this.state.password}
               onChange={this.onChangePassword}
             />
           </div>
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Create person"
-              className="btn btn-primary"
-            />
+          <div
+            className='form-group d-flex justify-content-center'
+            style={{ marginTop: '10px' }}
+          >
+            <input type='submit' value='Register' className='btn btn-primary' />
           </div>
         </form>
       </div>
