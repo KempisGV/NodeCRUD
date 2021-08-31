@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import Navbar from './components/navbar';
 import Edit from './components/edit';
 import Register from './components/register';
+import Login from './components/login';
 import RecordList from './components/recordList';
 
 const App = () => {
@@ -19,6 +20,9 @@ const App = () => {
       <Route path='/edit/:id' component={Edit} />
       <Route path='/register'>
         <Register />
+      </Route>
+      <Route path='/login'>
+        <Login />
       </Route>
     </div>
   );
