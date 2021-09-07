@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
         res.cookie('w_authExp', user.tokenExp);
         res.cookie('w_auth', user.token).status(200).json({
           loginSuccess: true,
-          userId: user._id,
+          token: user.token,
         });
       });
     });
