@@ -33,23 +33,61 @@ router.get('/:id', async (req, res) => {
 });
 
 //POST-LOGIN
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   // Form validation
-  const { isValid } = validateLoginInput(req.body);
+  //console.log(req.body);
+  const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
   if (!isValid) {
-    return res.status(400).json();
+    return res.status(400).json(errors);
   }
   const mail = req.body.mail;
   const password = req.body.password;
   // Find user by email
-  User.findOne({ mail }).then(user => {
+  await User.findOne({ mail }).then(user => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ mailnotfound: 'Mail not found' });
     }
     // Check password
+    bcrypt.hash(password, 10, function (err, hash) {
+      if (err) {
+        throw err;
+      }
+    });
+
+    bcrypt.hash('mypassword', 10, function (err, hash) {
+      if (err) {
+        throw err;
+      }
+
+      bcrypt.compare('mypassword', hash, function (err, result) {
+        if (err) {
+          throw err;
+        }
+        console.log(result);
+      });
+    });
+
+    //
+    bcrypt.hash('mypassword', 10, function (err, hash) {
+      if (err) {
+        throw err;
+      }
+
+      bcrypt.compare('mypassword', hash, function (err, result) {
+        if (err) {
+          throw err;
+        }
+        console.log(result);
+      });
+    });
+
+    //
+
+    //
     bcrypt.compare(password, user.password).then(isMatch => {
+      console.log(`${password} userpass->${user.password}`);
       if (isMatch) {
         // User matched
         // Create JWT Payload
@@ -81,17 +119,38 @@ router.post('/login', (req, res) => {
 });
 
 //POST-REGISTRO
-router.post('/register', async (req, res) => {
-  const { name, mail, password } = req.body;
-  const user = new User({ name, mail, password });
-
-  try {
-    await user.save();
-    res.json({ mensaje: 'Usuario creado' });
-  } catch (error) {
-    res.status(400);
-    res.json({ error: `${error}` });
+// @route POST api/users/register
+// @desc Register user
+// @access Public
+router.post('/register', (req, res) => {
+  // Form validation
+  const { errors, isValid } = validateRegisterInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
+  User.findOne({ mail: req.body.mail }).then(user => {
+    if (user) {
+      return res.status(400).json({ mail: 'Email already exists' });
+    } else {
+      const newUser = new User({
+        name: req.body.name,
+        mail: req.body.mail,
+        password: req.body.password,
+      });
+      // Hash password before saving in database
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err));
+        });
+      });
+    }
+  });
 });
 
 //PUT

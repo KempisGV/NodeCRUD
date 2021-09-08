@@ -9,12 +9,6 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   mail: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  token: {
-    type: String,
-  },
-  tokenExp: {
-    type: Number,
-  },
 });
 
 UserSchema.pre('save', function (next) {
