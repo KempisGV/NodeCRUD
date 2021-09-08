@@ -3,7 +3,14 @@ const router = express.Router();
 const User = require('../models/user');
 const { auth } = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const keys = require('../config/keys');
 const saltRounds = 10;
+
+// Load input validation
+const validateRegisterInput = require('../validation/register');
+const validateLoginInput = require('../validation/login');
+
 //AUTENTICACION
 router.get('/auth', auth, async (req, res) => {
   res.status(200).json({
@@ -26,26 +33,49 @@ router.get('/:id', async (req, res) => {
 });
 
 //POST-LOGIN
-router.post('/login', async (req, res) => {
-  await User.findOne({ mail: req.body.mail }, (err, user) => {
+router.post('/login', (req, res) => {
+  // Form validation
+  const { isValid } = validateLoginInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json();
+  }
+  const mail = req.body.mail;
+  const password = req.body.password;
+  // Find user by email
+  User.findOne({ mail }).then(user => {
+    // Check if user exists
     if (!user) {
-      return res.json({
-        loginSucces: false,
-        message: 'Auth failed, email not found',
-      });
+      return res.status(404).json({ mailnotfound: 'Mail not found' });
     }
-    user.comparePassword(req.body.password, (err, isMatch) => {
-      if (!isMatch)
-        return res.json({ loginSuccess: false, message: 'Wrong password' });
-
-      user.generateToken((err, user) => {
-        if (err) return res.status(400).send(err);
-        res.cookie('w_authExp', user.tokenExp);
-        res.cookie('w_auth', user.token).status(200).json({
-          loginSuccess: true,
-          token: user.token,
-        });
-      });
+    // Check password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        // User matched
+        // Create JWT Payload
+        const payload = {
+          id: user.id,
+          name: user.name,
+        };
+        // Sign token
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          {
+            expiresIn: 31556926, // 1 year in seconds
+          },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token,
+            });
+          }
+        );
+      } else {
+        return res
+          .status(400)
+          .json({ passwordincorrect: 'Password incorrect' });
+      }
     });
   });
 });
