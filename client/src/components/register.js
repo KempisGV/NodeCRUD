@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 // This will require to npm install axios
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
+import classnames from 'classnames';
 import '../styles.css';
 
-export default class Register extends Component {
+class Register extends Component {
   // This is the constructor that stores the data.
   constructor(props) {
     super(props);
@@ -18,6 +23,13 @@ export default class Register extends Component {
       mail: '',
       password: '',
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+      });
+    }
   }
 
   // These methods will update the state properties.
@@ -49,6 +61,8 @@ export default class Register extends Component {
       mail: this.state.mail,
       password: this.state.password,
     };
+
+    this.props.registerUser(newuser, this.props.history);
 
     axios
       .post('http://localhost:4000/api/users/register', newuser)
@@ -106,3 +120,13 @@ export default class Register extends Component {
     );
   }
 }
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+export default connect(mapStateToProps, { registerUser })(withRouter(Register));

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../actions/authActions';
+import classnames from 'classnames';
 // This will require to npm install axios
 import axios from 'axios';
 import '../styles.css';
 
-export default class Login extends Component {
+class Login extends Component {
   // This is the constructor that stores the data.
   constructor(props) {
     super(props);
@@ -16,6 +20,16 @@ export default class Login extends Component {
       mail: '',
       password: '',
     };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/'); // push user to dashboard when they login
+    }
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+      });
+    }
   }
 
   // These methods will update the state properties.
@@ -40,6 +54,8 @@ export default class Login extends Component {
       mail: this.state.mail,
       password: this.state.password,
     };
+
+    this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
 
     axios
       .post('http://localhost:4000/api/users/login', loginuser)
@@ -87,3 +103,14 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+export default connect(mapStateToProps, { loginUser })(Login);
