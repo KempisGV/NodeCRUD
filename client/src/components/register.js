@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 // This will require to npm install axios
-//import axios from 'axios';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
-//import classnames from 'classnames';
+import classnames from 'classnames';
 import '../styles.css';
 
 class Register extends Component {
@@ -24,13 +24,6 @@ class Register extends Component {
       password: '',
     };
   }
-  componentDidMount() {
-    // If logged in and user navigates to Register page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
@@ -71,9 +64,9 @@ class Register extends Component {
 
     this.props.registerUser(newuser, this.props.history);
 
-    /* axios
+    axios
       .post('http://localhost:4000/api/users/register', newuser)
-      .then(res => console.log(res.data));*/
+      .then(res => console.log(res.data));
 
     // We will empty the state after posting the data to the database
     this.setState({

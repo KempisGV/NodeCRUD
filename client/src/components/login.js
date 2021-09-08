@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { loginUser } from '../actions/authActions';
 
 // This will require to npm install axios
-//import axios from 'axios';
+import axios from 'axios';
 import '../styles.css';
 
 class Login extends Component {
@@ -20,12 +20,6 @@ class Login extends Component {
       mail: '',
       password: '',
     };
-  }
-  componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
@@ -61,11 +55,11 @@ class Login extends Component {
       password: this.state.password,
     };
 
-    this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+    //this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
 
-    /*axios
+    axios
       .post('http://localhost:4000/api/users/login', loginuser)
-      .then(res => console.log(res.data));*/
+      .then(res => console.log(res.data));
 
     // We will empty the state after posting the data to the database
     this.setState({
