@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../actions/authActions';
-import classnames from 'classnames';
+
 // This will require to npm install axios
 import axios from 'axios';
 import '../styles.css';
@@ -23,7 +23,7 @@ class Login extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/'); // push user to dashboard when they login
+      this.props.history.push('/dashboard'); // push user to dashboard when they login
     }
     if (nextProps.errors) {
       this.setState({
@@ -55,7 +55,7 @@ class Login extends Component {
       password: this.state.password,
     };
 
-    this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+    //this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
 
     axios
       .post('http://localhost:4000/api/users/login', loginuser)
