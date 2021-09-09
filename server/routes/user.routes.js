@@ -84,7 +84,18 @@ router.post('/login', async (req, res) => {
     });
 
     //
+    bcrypt.hash(password, 10, function (err, hash) {
+      if (err) {
+        throw err;
+      }
 
+      bcrypt.compare(password, hash, function (err, result) {
+        if (err) {
+          throw err;
+        }
+        console.log(result);
+      });
+    });
     //
     bcrypt.compare(password, user.password).then(isMatch => {
       console.log(`${password} userpass->${user.password}`);
