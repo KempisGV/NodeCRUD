@@ -50,23 +50,29 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ mailnotfound: 'Mail not found' });
     }
     // Check password
-    //
     bcrypt.hash(password, 10, function (err, hash) {
       if (err) {
         throw err;
       }
+    });
 
-      bcrypt.compare(password, hash, function (err, result) {
+    bcrypt.hash('mypassword', 10, function (err, hash) {
+      if (err) {
+        throw err;
+      }
+
+      bcrypt.compare('mypassword', hash, function (err, result) {
         if (err) {
           throw err;
         }
         console.log(result);
       });
     });
+
     //
-    bcrypt.compare(password, user.password).then(isMatch => {
-      console.log(`${password} userpass->${user.password}`);
-      if (isMatch) {
+    
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (!isMatch){
         // User matched
         // Create JWT Payload
         const payload = {
