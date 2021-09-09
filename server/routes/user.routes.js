@@ -50,39 +50,6 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ mailnotfound: 'Mail not found' });
     }
     // Check password
-    bcrypt.hash(password, 10, function (err, hash) {
-      if (err) {
-        throw err;
-      }
-    });
-
-    bcrypt.hash('mypassword', 10, function (err, hash) {
-      if (err) {
-        throw err;
-      }
-
-      bcrypt.compare('mypassword', hash, function (err, result) {
-        if (err) {
-          throw err;
-        }
-        console.log(result);
-      });
-    });
-
-    //
-    bcrypt.hash('mypassword', 10, function (err, hash) {
-      if (err) {
-        throw err;
-      }
-
-      bcrypt.compare('mypassword', hash, function (err, result) {
-        if (err) {
-          throw err;
-        }
-        console.log(result);
-      });
-    });
-
     //
     bcrypt.hash(password, 10, function (err, hash) {
       if (err) {
