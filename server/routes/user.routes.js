@@ -35,7 +35,6 @@ router.get('/:id', async (req, res) => {
 //POST-LOGIN
 router.post('/login', async (req, res) => {
   // Form validation
-  //console.log(req.body);
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
   if (!isValid) {
@@ -44,50 +43,37 @@ router.post('/login', async (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
   // Find user by email
-  await User.findOne({ mail }).then(user => {
-    console.log(user);
-    // Check if user exists
-    if (!user) {
-      return res.status(404).json({ mailnotfound: 'Mail not found' });
-    }
-    // Check password
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, function (err, hash) {
-        if (err) {
-          throw err;
+  const user = await User.findOne({ mail });
+  // Check if user exists
+  if (!user) {
+    return res.status(404).json({ emailnotfound: 'Email not found' });
+  }
+  // Check password
+  await bcrypt.compare(password, user.password).then(isMatch => {
+    if (isMatch) {
+      // User matched
+      // Create JWT Payload
+      const payload = {
+        id: user.id,
+        name: user.name,
+      };
+      // Sign token
+      jwt.sign(
+        payload,
+        keys.secretOrKey,
+        {
+          expiresIn: 31556926, // 1 year in seconds
+        },
+        (err, token) => {
+          res.json({
+            success: true,
+            token: 'Bearer ' + token,
+          });
         }
-        console.log(hash);
-        console.log(user.password);
-        bcrypt.compare(user.password, hash).then(isMatch => {
-          if (isMatch) {
-            // User matched
-            // Create JWT Payload
-            const payload = {
-              id: user.id,
-              name: user.name,
-            };
-            // Sign token
-            jwt.sign(
-              payload,
-              keys.secretOrKey,
-              {
-                expiresIn: 31556926, // 1 year in seconds
-              },
-              (err, token) => {
-                res.json({
-                  success: true,
-                  token: 'Bearer ' + token,
-                });
-              }
-            );
-          } else {
-            return res
-              .status(400)
-              .json({ passwordincorrect: 'Password incorrect' });
-          }
-        });
-      });
-    }); //LLAVE DEL bcryptgensalt
+      );
+    } else {
+      return res.status(400).json({ passwordincorrect: 'Password incorrect' });
+    }
   });
 });
 
@@ -95,14 +81,14 @@ router.post('/login', async (req, res) => {
 // @route POST api/users/register
 // @desc Register user
 // @access Public
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  User.findOne({ mail: req.body.mail }).then(user => {
+  await User.findOne({ mail: req.body.mail }).then(user => {
     if (user) {
       return res.status(400).json({ mail: 'Email already exists' });
     } else {
