@@ -45,60 +45,49 @@ router.post('/login', async (req, res) => {
   const password = req.body.password;
   // Find user by email
   await User.findOne({ mail }).then(user => {
+    console.log(user);
     // Check if user exists
     if (!user) {
       return res.status(404).json({ mailnotfound: 'Mail not found' });
     }
     // Check password
-    bcrypt.hash(password, 10, function (err, hash) {
-      if (err) {
-        throw err;
-      }
-    });
-
-    bcrypt.hash('mypassword', 10, function (err, hash) {
-      if (err) {
-        throw err;
-      }
-
-      bcrypt.compare('mypassword', hash, function (err, result) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, function (err, hash) {
         if (err) {
           throw err;
         }
-        console.log(result);
-      });
-    });
-
-    //
-    
-    user.comparePassword(req.body.password, (err, isMatch) => {
-      if (!isMatch){
-        // User matched
-        // Create JWT Payload
-        const payload = {
-          id: user.id,
-          name: user.name,
-        };
-        // Sign token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          {
-            expiresIn: 31556926, // 1 year in seconds
-          },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: 'Bearer ' + token,
-            });
+        console.log(hash);
+        console.log(user.password);
+        bcrypt.compare(user.password, hash).then(isMatch => {
+          if (isMatch) {
+            // User matched
+            // Create JWT Payload
+            const payload = {
+              id: user.id,
+              name: user.name,
+            };
+            // Sign token
+            jwt.sign(
+              payload,
+              keys.secretOrKey,
+              {
+                expiresIn: 31556926, // 1 year in seconds
+              },
+              (err, token) => {
+                res.json({
+                  success: true,
+                  token: 'Bearer ' + token,
+                });
+              }
+            );
+          } else {
+            return res
+              .status(400)
+              .json({ passwordincorrect: 'Password incorrect' });
           }
-        );
-      } else {
-        return res
-          .status(400)
-          .json({ passwordincorrect: 'Password incorrect' });
-      }
-    });
+        });
+      });
+    }); //LLAVE DEL bcryptgensalt
   });
 });
 
