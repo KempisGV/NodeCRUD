@@ -38,6 +38,18 @@ export const loginUser = userData => dispatch => {
       })
     );
 };
+
+export const createTask = (userData, history) => dispatch => {
+  axios
+    .post('http://localhost:4000/api/tasks/create', userData)
+    .then(res => history.push('/dashboard')) // re-direct to dashboard after creating a task
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data,
+      })
+    );
+};
 // Set logged in user
 export const setCurrentUser = decoded => {
   return {

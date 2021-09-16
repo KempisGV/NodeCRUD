@@ -7,4 +7,5 @@ const TaskSchema = new Schema({
   description: { type: String, required: true },
   status: { type: Boolean, default: false },
 });
+
 module.exports = mongoose.model('Task', TaskSchema);

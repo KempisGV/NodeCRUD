@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 // This will require to npm install axios
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -6,8 +8,7 @@ import { Link } from 'react-router-dom';
 const Record = props => (
   <tr>
     <td>{props.record.name}</td>
-    <td>{props.record.mail}</td>
-    <td>{props.record.password}</td>
+    <td>{props.record.description}</td>
     <td>
       <Link to={'/edit/' + props.record._id}>Edit</Link> |
       <a
@@ -22,7 +23,7 @@ const Record = props => (
   </tr>
 );
 
-export default class RecordList extends Component {
+class RecordList extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
@@ -32,10 +33,12 @@ export default class RecordList extends Component {
 
   // This method will get the data from the database.
   componentDidMount() {
+    const { user } = this.props.auth;
     axios
-      .get('http://localhost:4000/api/users/')
+      .get(`http://localhost:4000/api/tasks/${user.id}`)
       .then(response => {
         this.setState({ records: response.data });
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -44,8 +47,8 @@ export default class RecordList extends Component {
 
   // This method will delete a record based on the method
   deleteRecord(id) {
-    axios.delete('http://localhost:3000/' + id).then(response => {
-      console.log(response.data);
+    axios.delete('http://localhost:4000/' + id).then(response => {
+      //console.log(response.data);
     });
 
     this.setState({
@@ -55,6 +58,7 @@ export default class RecordList extends Component {
 
   // This method will map out the users on the table
   recordList() {
+    //console.log(this.state.record);
     return this.state.records.map(currentrecord => {
       return (
         <Record
@@ -86,3 +90,11 @@ export default class RecordList extends Component {
     );
   }
 }
+
+RecordList.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+export default connect(mapStateToProps)(RecordList);

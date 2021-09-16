@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
+const User = require('../models/user');
 
 //GET TODAS LAS TAREAS
 router.get('/', async (req, res) => {
@@ -10,7 +11,7 @@ router.get('/', async (req, res) => {
 
 //GETBYID
 router.get('/:id', async (req, res) => {
-  const tasks = await Task.findById(req.params.id);
+  const tasks = await Task.find({ _userId: req.params.id });
   res.json(tasks);
 });
 
@@ -21,7 +22,7 @@ router.post('/create', async (req, res) => {
 
   try {
     await task.save();
-    res.json({ mensaje: 'Tarea creada' });
+    await res.json({ mensaje: 'Tarea creada' });
   } catch (error) {
     res.status(400);
     res.json({ error: `${error}` });
