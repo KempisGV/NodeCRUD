@@ -15,7 +15,7 @@ import Register from './components/register';
 import Login from './components/login';
 import taskList from './components/taskList';
 import PrivateRoute from './components/private-route/PrivateRoute';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/create';
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -49,7 +49,7 @@ class App extends Component {
             <Route exact path='/edit/:id' component={Edit} />
 
             <Switch>
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/create' component={Dashboard} />
             </Switch>
           </div>
         </Router>

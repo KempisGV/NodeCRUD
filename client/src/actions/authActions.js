@@ -42,7 +42,7 @@ export const loginUser = userData => dispatch => {
 export const createTask = (userData, history) => dispatch => {
   axios
     .post('http://localhost:4000/api/tasks/create', userData)
-    .then(res => history.push('/dashboard')) // re-direct to dashboard after creating a task
+    .then(res => history.push('/create')) // re-direct to dashboard after creating a task
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

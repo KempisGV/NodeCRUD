@@ -9,12 +9,17 @@ router.get('/', async (req, res) => {
   res.json(tasks);
 });
 
-//GETBYID
+//GETTASKS OF A USER
 router.get('/:id', async (req, res) => {
   const tasks = await Task.find({ _userId: req.params.id });
   res.json(tasks);
 });
 
+//GET TASK BY ITS ID
+router.get('/details/:id', async (req, res) => {
+  const tasks = await Task.findById(req.params.id );
+  res.json(tasks);
+});
 //POST
 router.post('/create', async (req, res) => {
   const { _userId, name, description, status } = req.body;
