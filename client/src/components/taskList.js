@@ -18,6 +18,11 @@ const Task = props => (
         onClick={() => {
           props.deleteTask(props.Task._id);
         }}>Delete
+      </a> <a
+        href='/'
+        onClick={() => {
+          props.changeStatusTask(props.Task._id);
+        }}>Done
       </a>
     </td>
   </tr>
@@ -28,6 +33,7 @@ class taskList extends Component {
   constructor(props) {
     super(props);
     this.deleteTask = this.deleteTask.bind(this);
+    this.changeStatusTask = this.changeStatusTask.bind(this);
     this.state = { tasks: [] };
   }
 
@@ -37,6 +43,7 @@ class taskList extends Component {
     axios
       .get(`http://localhost:4000/api/tasks/${user.id}`)
       .then(response => {
+
         this.setState({ tasks: response.data });
         console.log(response.data);
       })
@@ -55,15 +62,20 @@ class taskList extends Component {
       Task: this.state.tasks.filter(el => el._id !== id),
     });
   }
+ // This method will delete a Task based on the method
+ changeStatusTask(id) {
+  axios.get('http://localhost:4000/api/tasks/change/' + id).then(response => {
+  });
+}
 
   // This method will map out the users on the table
   taskList() {
-    //console.log(this.state.Task);
     return this.state.tasks.map(currentTask => {
       return (
         <Task
           Task={currentTask}
           deleteTask={this.deleteTask}
+          changeStatusTask={this.changeStatusTask}
           key={currentTask._id}
         />
       );

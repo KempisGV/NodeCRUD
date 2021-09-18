@@ -12,12 +12,13 @@ class Navbar extends Component {
     e.preventDefault();
     this.props.logoutUser();
   };
+  
   render() {
     return (
       <div>
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
           <NavLink className='navbar-brand' to='/'>
-            MongoDB
+            NODE CRUD
           </NavLink>
           <button
             className='navbar-toggler'

@@ -1,15 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
-const User = require('../models/user');
 
 //GET TODAS LAS TAREAS
 router.get('/', async (req, res) => {
   const tasks = await Task.find();
   res.json(tasks);
 });
-
-//GETTASKS OF A USER
+//Change status
+router.get('/change/:id', async (req, res, next) => {
+  let { id } = req.params;
+  const task = await Task.findById(id);
+  task.status = !task.status;
+  console.log(task)
+  await task.save();
+});
+//GET TASKS OF A USER
 router.get('/:id', async (req, res) => {
   const tasks = await Task.find({ _userId: req.params.id });
   res.json(tasks);
@@ -36,8 +42,8 @@ router.post('/create', async (req, res) => {
 
 //PUT
 router.put('/:id', async (req, res) => {
-  const { name, description, status } = req.body;
-  const newTask = { name, description, status };
+  const { name, description } = req.body;
+  const newTask = { name, description };
   await Task.findByIdAndUpdate(req.params.id, newTask);
   res.json({ mensaje: 'Tarea actualizada' });
 });

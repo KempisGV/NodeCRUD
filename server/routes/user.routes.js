@@ -11,14 +11,6 @@ const saltRounds = 10;
 const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
 
-//AUTENTICACION
-router.get('/auth', auth, async (req, res) => {
-  res.status(200).json({
-    _id: req.user._id,
-    name: req.user.name,
-    mail: req.user.mail,
-  });
-});
 
 //GET TODOS LOS USUARIOS
 router.get('/', async (req, res) => {

@@ -9,7 +9,6 @@ class Dashboard extends Component {
 
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {

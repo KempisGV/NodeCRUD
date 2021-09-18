@@ -63,6 +63,7 @@ export const setUserLoading = () => {
     type: USER_LOADING,
   };
 };
+
 // Log user out
 export const logoutUser = () => dispatch => {
   // Remove token from local storage
