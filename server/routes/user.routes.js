@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const { auth } = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
@@ -128,7 +127,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 //LOGOUT
-router.get('/logout', auth, (req, res) => {
+router.get('/logout', (req, res) => {
   User.findOneAndUpdate(
     { _id: req.user._id },
     { token: '', tokenExp: '' },
