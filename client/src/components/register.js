@@ -62,7 +62,7 @@ class Register extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    // When post request is sent to the create url, axios will add a new record(newperson) to the database.
+    // When post request is sent to the create url, axios will add a new Task(newperson) to the database.
     const newuser = {
       name: this.state.name,
       mail: this.state.mail,

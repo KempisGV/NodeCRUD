@@ -35,7 +35,7 @@ class Navbar extends Component {
             <ul className='navbar-nav ml-auto'>
               <li className='nav-item'>
                 <NavLink className='nav-link' to='/create'>
-                  Create Record
+                  Create Task
                 </NavLink>
               </li>
               <li className='nav-item'>

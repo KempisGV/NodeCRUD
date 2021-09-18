@@ -13,7 +13,7 @@ import Navbar from './components/navbar';
 import Edit from './components/edit';
 import Register from './components/register';
 import Login from './components/login';
-import RecordList from './components/recordList';
+import taskList from './components/taskList';
 import PrivateRoute from './components/private-route/PrivateRoute';
 import Dashboard from './components/Dashboard';
 
@@ -43,9 +43,11 @@ class App extends Component {
         <Router>
           <div className='App'>
             <Navbar />
-            <Route exact path='/' component={RecordList} />
+            <Route exact path='/' component={taskList} />
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
+            <Route exact path='/edit/:id' component={Edit} />
+
             <Switch>
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
             </Switch>

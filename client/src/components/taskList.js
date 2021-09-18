@@ -5,30 +5,30 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const Record = props => (
+const Task = props => (
   <tr>
-    <td>{props.record.name}</td>
-    <td>{props.record.description}</td>
+    <td>{props.Task.name}</td>
+    <td>{props.Task.description}</td>
+    <td>{String(props.Task.status)}</td>
+
     <td>
-      <Link to={'/edit/' + props.record._id}>Edit</Link> |
+      <Link to={'/edit/' + props.Task._id}>Edit</Link> |
       <a
         href='/'
         onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
+          props.deleteTask(props.Task._id);
+        }}>Delete
       </a>
     </td>
   </tr>
 );
 
-class RecordList extends Component {
+class taskList extends Component {
   // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
-    this.deleteRecord = this.deleteRecord.bind(this);
-    this.state = { records: [] };
+    this.deleteTask = this.deleteTask.bind(this);
+    this.state = { tasks: [] };
   }
 
   // This method will get the data from the database.
@@ -37,7 +37,7 @@ class RecordList extends Component {
     axios
       .get(`http://localhost:4000/api/tasks/${user.id}`)
       .then(response => {
-        this.setState({ records: response.data });
+        this.setState({ tasks: response.data });
         console.log(response.data);
       })
       .catch(function (error) {
@@ -45,56 +45,56 @@ class RecordList extends Component {
       });
   }
 
-  // This method will delete a record based on the method
-  deleteRecord(id) {
-    axios.delete('http://localhost:4000/' + id).then(response => {
+  // This method will delete a Task based on the method
+  deleteTask(id) {
+    axios.delete('http://localhost:4000/api/tasks/' + id).then(response => {
       //console.log(response.data);
     });
 
     this.setState({
-      record: this.state.records.filter(el => el._id !== id),
+      Task: this.state.tasks.filter(el => el._id !== id),
     });
   }
 
   // This method will map out the users on the table
-  recordList() {
-    //console.log(this.state.record);
-    return this.state.records.map(currentrecord => {
+  taskList() {
+    //console.log(this.state.Task);
+    return this.state.tasks.map(currentTask => {
       return (
-        <Record
-          record={currentrecord}
-          deleteRecord={this.deleteRecord}
-          key={currentrecord._id}
+        <Task
+          Task={currentTask}
+          deleteTask={this.deleteTask}
+          key={currentTask._id}
         />
       );
     });
   }
 
-  // This following section will display the table with the records of individuals.
+  // This following section will display the table with the tasks of individuals.
   render() {
     return (
       <div>
-        <h3>Record List</h3>
+        <h3>Task List</h3>
         <table className='table table-striped' style={{ marginTop: 20 }}>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Position</th>
-              <th>Level</th>
+              <th>Description</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>{this.recordList()}</tbody>
+          <tbody>{this.taskList()}</tbody>
         </table>
       </div>
     );
   }
 }
 
-RecordList.propTypes = {
+taskList.propTypes = {
   auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
   auth: state.auth,
 });
-export default connect(mapStateToProps)(RecordList);
+export default connect(mapStateToProps)(taskList);

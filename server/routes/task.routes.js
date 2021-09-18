@@ -31,8 +31,8 @@ router.post('/create', async (req, res) => {
 
 //PUT
 router.put('/:id', async (req, res) => {
-  const { _userId, name, description, status } = req.body;
-  const newTask = { _userId, name, description, status };
+  const { name, description, status } = req.body;
+  const newTask = { name, description, status };
   await Task.findByIdAndUpdate(req.params.id, newTask);
   res.json({ mensaje: 'Tarea actualizada' });
 });
