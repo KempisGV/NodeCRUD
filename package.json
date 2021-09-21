@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/app.js",
-    "dev": "nodemon server/app.js"
+    "dev": "nodemon server/app.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,9 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
-  }
+  },
+  "engines": {
+    "node": "14.17.4"
+  },
+  "proxy": "http://localhost:8000"
 }

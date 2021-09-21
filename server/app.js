@@ -25,7 +25,9 @@ app.use('/api/tasks', require('./routes/task.routes'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 //Starting the server
 app.listen(app.get('port'), () => {
   console.log(`Server on port ${app.get('port')}`);
