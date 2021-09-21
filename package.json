@@ -1,0 +1,52 @@
+{
+  "name": "node-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "webpack": "webpack --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KempisGV/NodeCRUD.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KempisGV/NodeCRUD/issues"
+  },
+  "homepage": "https://github.com/KempisGV/NodeCRUD#readme",
+  "dependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "css-loader": "^6.3.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.8",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "postcss-loader": "^6.1.1",
+    "style-loader": "^3.3.0",
+    "validator": "^13.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^2.0.12",
+    "sass": "^1.42.0",
+    "sass-loader": "^12.1.0",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0"
+  }
+}
