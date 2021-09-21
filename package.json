@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/app.js",
+    "start": "node app.js",
     "dev": "nodemon server/app.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
