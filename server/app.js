@@ -9,7 +9,7 @@ require('./models/user');
 const { mongoose } = require('./database');
 //Settings
 app.set('port', process.env.PORT || 4000);
-
+console.log(process.env.PORT)
 //Middlewares
 app.use(morgan('dev')); //sirve para tener información sobre cuanto tiempo tardo para la petición, código de error, etc
 app.use(express.json()); //comprueba si la información que llega es un json y así mismo se podrán enviar archivos con formato json

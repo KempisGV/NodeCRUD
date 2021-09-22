@@ -41,7 +41,7 @@ class taskList extends Component {
   componentDidMount() {
     const { user } = this.props.auth;
     axios
-      .get(`http://localhost:4000/api/tasks/${user.id}`)
+      .get(`/api/tasks/${user.id}`)
       .then(response => {
 
         this.setState({ tasks: response.data });
@@ -56,7 +56,7 @@ class taskList extends Component {
 
   // This method will delete a Task based on the method
   deleteTask(id) {
-    axios.delete('http://localhost:4000/api/tasks/' + id).then(response => {
+    axios.delete('/api/tasks/' + id).then(response => {
       //console.log(response.data);
     });
 
@@ -66,7 +66,7 @@ class taskList extends Component {
   }
  // This method will delete a Task based on the method
  changeStatusTask(id) {
-  axios.get('http://localhost:4000/api/tasks/change/' + id).then(response => {
+  axios.get('/api/tasks/change/' + id).then(response => {
   });
 }
 

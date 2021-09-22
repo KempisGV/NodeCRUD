@@ -64,9 +64,7 @@ class Login extends Component {
 
     this.props.loginUser(loginuser); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
 
-    /*axios
-      .post('http://localhost:4000/api/users/login', loginuser)
-      .then(res => console.log(res.data));*/
+  
 
     // We will empty the state after posting the data to the database
     this.setState({

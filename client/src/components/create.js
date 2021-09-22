@@ -52,9 +52,7 @@ class Dashboard extends Component {
 
     this.props.createTask(newTask, this.props.history);
 
-    /* axios
-      .post('http://localhost:4000/api/users/register', newuser)
-      .then(res => console.log(res.data));*/
+   
 
     // We will empty the state after posting the data to the database
     this.setState({

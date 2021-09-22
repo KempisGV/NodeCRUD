@@ -23,7 +23,7 @@ class Edit extends Component {
   // This will get the Task based on the id from the database.
   componentDidMount() {
     axios
-      .get("http://localhost:4000/api/tasks/" + this.props.match.params.id)
+      .get("/api/tasks/" + this.props.match.params.id)
       .then((response) => {
         console.log(response);
         this.setState({
@@ -69,7 +69,7 @@ class Edit extends Component {
     // This will send a post request to update the data in the database.
     axios
       .put(
-        "http://localhost:4000/api/tasks/" + this.props.match.params.id,
+        "/api/tasks/" + this.props.match.params.id,
         newEditedTask
       )
       .then((res) => console.log(res.data));

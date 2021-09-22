@@ -5,7 +5,7 @@ import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './types';
 // Register User
 export const registerUser = (userData, history) => dispatch => {
   axios
-    .post('http://localhost:4000/api/users/register', userData)
+    .post('/api/users/register', userData)
     .then(res => history.push('/login')) // re-direct to login on successful register
     .catch(err =>
       dispatch({
@@ -17,7 +17,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - get user token
 export const loginUser = userData => dispatch => {
   axios
-    .post('http://localhost:4000/api/users/login', userData)
+    .post('api/users/login', userData)
     .then(res => {
       // Save to localStorage
       // Set token to localStorage
@@ -41,7 +41,7 @@ export const loginUser = userData => dispatch => {
 
 export const createTask = (userData, history) => dispatch => {
   axios
-    .post('http://localhost:4000/api/tasks/create', userData)
+    .post('/api/tasks/create', userData)
     .then(res => history.push('/create')) // re-direct to dashboard after creating a task
     .catch(err =>
       dispatch({
